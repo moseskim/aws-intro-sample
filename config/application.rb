@@ -15,10 +15,10 @@ module SampleApp
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    config.time_zone = 'Tokyo' #アプリケーションのタイムゾーン
-    config.active_record.default_timezone = :local #データベースのタイムゾーン
+    config.time_zone = 'Seoul' # 애플리케이션의 타임존
+    config.active_record.default_timezone = :local #데이터베이스의 타임존
 
-    # 認証トークンをremoteフォームに埋め込む
+    # 인증 토큰을 remote 폼에 삽입
     config.action_view.embed_authenticity_token_in_remote_forms = true
   end
 end

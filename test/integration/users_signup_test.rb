@@ -30,16 +30,16 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_equal 1, ActionMailer::Base.deliveries.size
     user = assigns(:user)
     assert_not user.activated?
-    # 有効化していない状態でログインしてみる
+    # 활성화하지 않은 상태에서 로그인해본다
     log_in_as(user)
     assert_not is_logged_in?
-    # 有効化トークンが不正な場合
+    # 활성화 토큰이 정확하지 않은 경우
     get edit_account_activation_path("invalid token", email: user.email)
     assert_not is_logged_in?
-    # トークンは正しいがメールアドレスが無効な場合
+    # 토큰을 올바르지만 이메일 주소가 유효하지 않은 경우
     get edit_account_activation_path(user.activation_token, email: 'wrong')
     assert_not is_logged_in?
-    # 有効化トークンが正しい場合
+    # 활성화 토큰이 올바른 경우
     get edit_account_activation_path(user.activation_token, email: user.email)
     assert user.reload.activated?
     follow_redirect!

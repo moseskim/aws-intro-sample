@@ -19,65 +19,65 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
-  # 渡された文字列のハッシュ値を返す
+  # 전달된 문자열의 해시값을 반환한다
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
 
-  # ランダムなトークンを返す
+  # 무작위 토큰을 반환한다
   def User.new_token
     SecureRandom.urlsafe_base64
   end
 
-  # 永続セッションのためにユーザーをデータベースに記憶する
+  # 역구 세션을 위해 사용자를 데이터베이스에 기록한다
   def remember
     self.remember_token = User.new_token
     update_attribute(:remember_digest, User.digest(remember_token))
   end
 
-  # トークンがダイジェストと一致したらtrueを返す
+  # 토큰이 다이제스트와 일치하면 true를 반환한다
   def authenticated?(attribute, token)
     digest = send("#{attribute}_digest")
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
   end
 
-  # ユーザーのログイン情報を破棄する
+  # 사용자의 로그인 정보를 파기한다
   def forget
     update_attribute(:remember_digest, nil)
   end
 
-  # アカウントを有効にする
+  # 계정을 활성화한다
   def activate
     update_attribute(:activated,    true)
     update_attribute(:activated_at, Time.zone.now)
   end
 
-  # 有効化用のメールを送信する
+  # 활성화용 메일을 송신한다
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
   end
 
-  # パスワード再設定の属性を設定する
+  # 비밀번호 재설정 속성을 설정한다
   def create_reset_digest
     self.reset_token = User.new_token
     update_attribute(:reset_digest,  User.digest(reset_token))
     update_attribute(:reset_sent_at, Time.zone.now)
   end
 
-  # パスワード再設定のメールを送信する
+  # 비밀번호 재설정 메일을 송신한다
   def send_password_reset_email
     UserMailer.password_reset(self).deliver_now
   end
 
-  # パスワード再設定の期限が切れている場合はtrueを返す
+  # 비밀번호 재설정 기한이 만료되었다면 true를 반환한다
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
   end
 
-  # ユーザーのステータスフィードを返す
+  # 사용자의 상태 피드를 반환한다
   def feed
     following_ids = "SELECT followed_id FROM relationships
                      WHERE follower_id = :user_id"
@@ -85,29 +85,29 @@ class User < ApplicationRecord
                      OR user_id = :user_id", user_id: id)
   end
 
-  # ユーザーをフォローする
+  # 사용자를 팔로우한다
   def follow(other_user)
     following << other_user
   end
 
-  # ユーザーをフォロー解除する
+  # 사용자를 언팔로우한다
   def unfollow(other_user)
     active_relationships.find_by(followed_id: other_user.id).destroy
   end
 
-  # 現在のユーザーがフォローしてたらtrueを返す
+  # 현재 사용자가 팔로우했다면 true를 반환한다
   def following?(other_user)
     following.include?(other_user)
   end
 
   private
 
-    # メールアドレスをすべて小文字にする
+    # 이메일 주소를 모두 소문자로 바꾼다
     def downcase_email
       self.email = email.downcase
     end
 
-    # 有効化トークンとダイジェストを作成および代入する
+    # 활성화 토큰과 다이제스트를 생성하고 대입한다
     def create_activation_digest
       self.activation_token  = User.new_token
       self.activation_digest = User.digest(activation_token)
