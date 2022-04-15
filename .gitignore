@@ -18,5 +18,5 @@
 
 .byebug_history
 
-# アップロードされたテスト画像を無視する
+# 업로드된 테스트 이지를 무시한다
 /public/uploads
