@@ -1,23 +1,23 @@
 module SessionsHelper
 
-  # 渡されたユーザーでログインする
+  # 전달받은 사용자로 로그인한다
   def log_in(user)
     session[:user_id] = user.id
   end
 
-  # ユーザーのセッションを永続的にする
+  # 사용자 세션을 영구적으로 설정한다
   def remember(user)
     user.remember
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent[:remember_token] = user.remember_token
   end
 
-  # 渡されたユーザーがログイン済みユーザーであればtrueを返す
+  # 전달받은 사용자가 로그인을 완료한 사용자이면 true를 반환한다
   def current_user?(user)
     user == current_user
   end
 
-  # 記憶トークンcookieに対応するユーザーを返す
+  # 기억 토큰 cookie에 대응하는 사용자를 반환한다
   def current_user
     if (user_id = session[:user_id])
       @current_user ||= User.find_by(id: user_id)
@@ -30,32 +30,32 @@ module SessionsHelper
     end
   end
 
-  # ユーザーがログインしていればtrue、その他ならfalseを返す
+  # 사용자가 로그인한 상태이면 true, 그렇지 않으면 false를 반환한다
   def logged_in?
     !current_user.nil?
   end
 
-  # 永続的セッションを破棄する
+  # 영구 세션을 파기한다
   def forget(user)
     user.forget
     cookies.delete(:user_id)
     cookies.delete(:remember_token)
   end
 
-  # 現在のユーザーをログアウトする
+  # 현재 사용자를 로그아웃 시킨다
   def log_out
     forget(current_user)
     session.delete(:user_id)
     @current_user = nil
   end
 
-  # 記憶したURL (もしくはデフォルト値) にリダイレクト
+  # 기억한 URL(또는 기본값)으로 리다이렉트한다
   def redirect_back_or(default)
     redirect_to(session[:forwarding_url] || default)
     session.delete(:forwarding_url)
   end
 
-  # アクセスしようとしたURLを覚えておく
+  # 접속하고자 한 URL을 기억해둔다
   def store_location
     session[:forwarding_url] = request.original_url if request.get?
   end

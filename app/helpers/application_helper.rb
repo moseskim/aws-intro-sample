@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  # ページごとの完全なタイトルを返します。
+  # 페이지별로 완전한 제목을 반환한다
   def full_title(page_title = '')
     base_title = "Ruby on Rails Tutorial Sample App"
     if page_title.empty?

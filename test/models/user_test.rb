@@ -100,15 +100,15 @@ class UserTest < ActiveSupport::TestCase
     michael = users(:michael)
     archer  = users(:archer)
     lana    = users(:lana)
-    # フォローしているユーザーの投稿を確認
+    # 팔로우하고 있는 사용자의 포스트 확인
     lana.microposts.each do |post_following|
       assert michael.feed.include?(post_following)
     end
-    # 自分自身の投稿を確認
+    # 내 포스트 확인
     michael.microposts.each do |post_self|
       assert michael.feed.include?(post_self)
     end
-    # フォローしていないユーザーの投稿を確認
+    # 팔로우하지 않고 있는 아닌 사용자의 포스트 확인
     archer.microposts.each do |post_unfollowed|
       assert_not michael.feed.include?(post_unfollowed)
     end
