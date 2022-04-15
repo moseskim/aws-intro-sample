@@ -46,5 +46,3 @@ $ rails test
 ```
 $ rails server
 ```
-
-자세한 내용은 [*Ruby on Rails 튜토리얼](https://www.learnenough.com/ruby-on-rails-6th-edition-tutorial)를 참조합니다.
