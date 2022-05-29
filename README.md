@@ -1,4 +1,4 @@
-# AWS로 시작하는 인프라스트럭처 입문
+# AWS로 시작하는 인프라 구축의 정석 (샘플 애플리케이션)
 
 이 프로젝트는 *13장. 샘플 애플리케이션*의 실행 코드이며 [*Ruby on Rails Tutorial*](https://www.learnenough.com/ruby-on-rails-6th-edition-tutorial)([Michael Hartl](http://www.michaelhartl.com/) 저)를 기준으로 작성되었습니다.
 
